@@ -1153,6 +1153,12 @@ int oplus_adfr_property_update(void *sde_connector, void *sde_connector_state, i
 		return -EINVAL;
 	}
 
+	p_oplus_adfr_params->sa_min_fps = 1;
+	p_oplus_adfr_params->sa_min_fps_updated = true;
+	prop_val  = OPLUS_ADFR_SA_MAGIC
+		| OPLUS_ADFR_SA_MIN_FPS_MAGIC
+		| 1;
+
 	if (!oplus_adfr_is_supported(p_oplus_adfr_params)) {
 		ADFR_DEBUG("adfr is not supported\n");
 		return 0;
@@ -1443,12 +1449,15 @@ static int oplus_adfr_auto_mode_update(void *dsi_display, unsigned int auto_mode
 /* prevent the wrong min fps setting */
 static int oplus_adfr_min_fps_check(void *dsi_panel, unsigned int min_fps)
 {
+#if 0
 	unsigned char min_fps_mapping_table_count = 0;
 	unsigned int refresh_rate = 120;
 	unsigned int h_skew = STANDARD_ADFR;
 	unsigned int idle_off_min_fps = 0;
 	struct dsi_panel *panel = dsi_panel;
 	struct oplus_adfr_params *p_oplus_adfr_params = NULL;
+#endif
+	struct dsi_panel *panel = dsi_panel;
 
 	ADFR_DEBUG("start\n");
 
@@ -1464,6 +1473,7 @@ static int oplus_adfr_min_fps_check(void *dsi_panel, unsigned int min_fps)
 	}
 #endif /* CONFIG_PXLW_IRIS */
 
+#if 0
 	p_oplus_adfr_params = oplus_adfr_get_params(panel);
 	if (!p_oplus_adfr_params) {
 		ADFR_ERR("invalid p_oplus_adfr_params param\n");
@@ -1515,6 +1525,9 @@ static int oplus_adfr_min_fps_check(void *dsi_panel, unsigned int min_fps)
 	ADFR_DEBUG("end\n");
 
 	return min_fps;
+#else
+	return 1;
+#endif
 }
 
 static int oplus_adfr_sa_fallback_min_fps_get(void *dsi_panel)
