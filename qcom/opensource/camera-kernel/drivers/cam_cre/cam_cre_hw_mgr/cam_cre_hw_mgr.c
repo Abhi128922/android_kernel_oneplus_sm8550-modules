@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2021, The Linux Foundation. All rights reserved.
- * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+ * Copyright (c) 2022-2023, Qualcomm Innovation Center, Inc. All rights reserved.
  */
 
 #include <linux/mutex.h>
@@ -137,13 +137,6 @@ static int cam_cre_mgr_process_cmd_io_buf_req(struct cam_cre_hw_mgr *hw_mgr,
 	struct   cam_buf_io_cfg *io_cfg_ptr = NULL;
 	struct   cam_cre_io_buf_info *acq_io_buf;
 
-	if (!ctx_data->cre_acquire.batch_size ||
-		(ctx_data->cre_acquire.batch_size > CRE_MAX_BATCH_SIZE)) {
-		CAM_ERR(CAM_CRE, "Invalid batch_size: %u ctx id: %u max_batch_size: %u",
-			ctx_data->cre_acquire.batch_size, ctx_data->ctx_id, CRE_MAX_BATCH_SIZE);
-		return -EINVAL;
-	}
-
 	io_cfg_ptr = (struct cam_buf_io_cfg *)((uint32_t *)&packet->payload +
 			packet->io_configs_offset / 4);
 
@@ -170,6 +163,7 @@ static int cam_cre_mgr_process_cmd_io_buf_req(struct cam_cre_hw_mgr *hw_mgr,
 			}
 
 			io_buf = cre_request->io_buf[i][j];
+<<<<<<< HEAD
 
 			if (!acq_io_buf->num_planes ||
 				(acq_io_buf->num_planes > CAM_CRE_MAX_PLANES)) {
@@ -181,6 +175,8 @@ static int cam_cre_mgr_process_cmd_io_buf_req(struct cam_cre_hw_mgr *hw_mgr,
 				return -EINVAL;
 			}
 
+=======
+>>>>>>> de6b7d44 (Import camera-kernel drivers from CPH2609_16.0.2.400)
 			io_buf->num_planes = acq_io_buf->num_planes;
 			io_buf->resource_type = acq_io_buf->res_id;
 			io_buf->direction = acq_io_buf->direction;
@@ -2190,10 +2186,6 @@ static int cam_cre_process_generic_cmd_buffer(
 		((uint32_t *) &packet->payload + packet->cmd_buf_offset/4);
 
 	for (i = 0; i < packet->num_cmd_buf; i++) {
-		rc = cam_packet_util_validate_cmd_desc(&cmd_desc[i]);
-		if (rc)
-			return rc;
-
 		if (!cmd_desc[i].length)
 			continue;
 
