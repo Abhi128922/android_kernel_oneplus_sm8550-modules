@@ -149,6 +149,7 @@ struct oplus_adfr_params {
 	unsigned int sa_min_fps;						/* the minimum self-refresh rate when no image would be sent to ddic in sa mode */
 	bool sa_min_fps_updated;						/* indicates whether sa min fps is updated or not */
 	bool sa_fallback_applied;						/* indicates whether kernel fallback has armed sa auto mode after the latest mode reset */
+	unsigned int user_min_fps;						/* userspace requested sa min fps, 0:auto (lowest table entry), clamped into the current timing's table otherwise */
 	bool skip_min_fps_setting;						/* indicates whether min fps setting should be skipped or not */
 	unsigned int sw_fps;							/* software vsync value */
 	unsigned int fakeframe;							/* indicates whether fakeframe is enabled or not */
@@ -319,6 +320,11 @@ int oplus_adfr_resend_osync_cmd(void *dsi_display);
 ssize_t oplus_adfr_set_config_attr(struct kobject *obj,
 	struct kobj_attribute *attr, const char *buf, size_t count);
 ssize_t oplus_adfr_get_config_attr(struct kobject *obj,
+	struct kobj_attribute *attr, char *buf);
+/* adfr_min_fps */
+ssize_t oplus_adfr_set_min_fps_attr(struct kobject *obj,
+	struct kobj_attribute *attr, const char *buf, size_t count);
+ssize_t oplus_adfr_get_min_fps_attr(struct kobject *obj,
 	struct kobj_attribute *attr, char *buf);
 /* mux_vsync_switch */
 ssize_t oplus_adfr_set_mux_vsync_switch_attr(struct kobject *obj,
